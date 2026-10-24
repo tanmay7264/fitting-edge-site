@@ -415,7 +415,7 @@ const reveal = !matchMedia('(prefers-reduced-motion: reduce)').matches && 'Inter
 $('.menu').addEventListener('click', e => { const open = $('#nav').classList.toggle('open'); e.currentTarget.setAttribute('aria-expanded', open); });
 
 $('#foot').innerHTML = `
-  <div><a class="logo" href="#/"><span class="mark" aria-hidden="true"></span>Fitting Edge</a><p>${esc(SITE.tagline)}<br>${esc(SITE.promise)}</p></div>
+  <div><a class="logo" href="#/" aria-label="Fitting Edge home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="feg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E3B0"/><stop offset=".55" stop-color="#C8A15A"/><stop offset="1" stop-color="#5BB8DC"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="#111216" stroke="url(#feg2)" stroke-width="1.4"/><path d="M10.5 23V9.5h11M10.5 16.2h7.5" stroke="url(#feg2)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M19.6 23.2l4.2-7.4" stroke="#5BB8DC" stroke-width="2.6" stroke-linecap="round"/></svg><span class="wm">fitting<b>edge</b></span></a><p>${esc(SITE.tagline)}<br>${esc(SITE.promise)}</p></div>
   <div><h4>Services</h4>${CATEGORIES.slice(0, 4).map(c => `<a href="#/services?cat=${c.id}">${esc(c.name)}</a>`).join('')}</div>
   <div><h4>Business</h4>${CATEGORIES.slice(4).map(c => `<a href="#/services?cat=${c.id}">${esc(c.name)}</a>`).join('')}<a href="${SITE.world3d}" target="_blank" rel="noopener">Our plan in 3D</a></div>
   <div><h4>Contact</h4><a href="tel:${C.phone.replace(/\s/g, '')}">${esc(C.phone)}</a><a href="mailto:${C.email}">${esc(C.email)}</a><a href="#/contact">Contact form</a><span>${esc(C.hours)}</span></div>

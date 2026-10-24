@@ -4,4 +4,5 @@ Static site for Fitting Edge: browse services, view details, book a visit, conta
 
 - Run locally: `python3 -m http.server` in this folder, then open http://localhost:8000
 - Edit content (services, contact details, FAQ): `data.js`
+- Design Studio, looks and the "Find your look" quiz: `studio.js`; the bathroom illustration and all its options: `art.js`
 - Before launch: replace the placeholder phone, WhatsApp and email in `data.js`, and set `formEndpoint` to a form service (e.g. Formspree) to receive bookings. Without it, forms open a pre-filled email.

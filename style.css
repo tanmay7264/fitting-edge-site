@@ -315,3 +315,16 @@ details.room[open] > fieldset { margin-top: 16px; }
 .specs { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 4px 18px; } .specs div:first-child { border-top: 0; }
 h1 em, h2 em { padding-right: .08em; }
 @media (max-width: 960px) { .studio-preview .bath { max-height: 36vh; } }
+
+/* ---------- v4: photography ---------- */
+.art.photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
+.svc:hover .art.photo img { transform: scale(1.05); }
+.photo-stage { padding: 0; overflow: hidden; }
+.photo-stage img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.photo-stage .stage-link { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); margin: 0; padding: 8px 14px; border-radius: 999px; background: #1E1F22d9; color: #F2EEE6; white-space: nowrap; }
+.ba img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.ba .after img { height: 100%; }
+.mine { display: grid; grid-template-columns: 220px 1fr; gap: 14px; align-items: center; margin-bottom: 14px; }
+.mine .bath { border-radius: 12px; aspect-ratio: 4 / 3; }
+.mine small { color: var(--muted); }
+@media (max-width: 560px) { .mine { grid-template-columns: 1fr; } }

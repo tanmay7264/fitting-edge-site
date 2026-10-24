@@ -36,11 +36,9 @@ const ICONS = {
 };
 const icon = n => `<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ICONS.tap}</svg></span>`;
 const look = () => ({ ...DEFAULT, ...(getProfile()?.cfg || {}) });  // the visitor's look, or the default
-const artFor = (s, big) => s.zones
-  ? `<div class="art photo${big ? ' banner' : ''}" aria-hidden="true">${bath({ ...look(), zones: s.zones, eco: s.id === 'water-smart' || look().eco, view: s.zones.length === 1 && !big ? s.zones[0] : null, label: '' })}</div>`
-  : `<div class="art art-${s.cat}${big ? ' banner' : ''}" aria-hidden="true"><i></i><i></i><svg viewBox="0 0 24 24">${ICONS[s.icon] || ICONS.tap}</svg></div>`;
+const photo = (s, cls = '') => `<div class="art photo ${cls}"><img src="img/${s.id}.jpg" alt="${esc(s.name)}: illustrative photo" loading="lazy" width="1200" height="900"></div>`;
 const forYou = s => getProfile()?.services?.includes(s.id);
-const card = s => `<a class="svc rv" href="#/services/${s.id}">${forYou(s) ? '<span class="foryou">Recommended for you</span>' : ''}${artFor(s)}<small>${esc(catOf(s.cat).name)}</small><h3>${esc(s.name)}</h3><p>${esc(s.tagline)}</p><span class="more">${s.kind === 'book' ? 'View & book' : 'View & enquire'} →</span></a>`;
+const card = s => `<a class="svc rv" href="#/services/${s.id}">${forYou(s) ? '<span class="foryou">Recommended for you</span>' : ''}${photo(s)}<small>${esc(catOf(s.cat).name)}</small><h3>${esc(s.name)}</h3><p>${esc(s.tagline)}</p><span class="more">${s.kind === 'book' ? 'View & book' : 'View & enquire'} →</span></a>`;
 const swatches = () => FINISHES.map(f => `<span class="chip"><i class="dot" style="background:${f.hex}"></i>${esc(f.name)}</span>`).join('');
 const STEPS = [['Choose a look', 'Browse curated looks and finishes, or ask for a home consultation.'], ['Select products', 'Pick one fitting, a zone, or the complete bath. We check compatibility.'], ['Get a quote', 'Itemised: products, installation, exclusions and optional service plan.'], ['Install & maintain', 'Trained installers fit it. Repairs and spare parts when you need them.']];
 
@@ -61,11 +59,10 @@ const pages = {
         <div class="btns"><a class="btn" href="#/book?service=consultation">Book a free consultation</a><a class="btn ghost" href="#/services">Browse services</a></div>
         <ul class="proof"><li>Itemised quotes</li><li>Trained installers</li><li>Repair-first service</li></ul>
       </div>
-      <div class="stage rv">
-        <div id="heroArt">${bath({ ...look(), label: `Bathroom with ${OPTIONS.finish[look().finish][0].toLowerCase()} fittings` })}</div>
-        <div class="switch" role="radiogroup" aria-label="Preview a finish">${FINISHES.map(f => `<button type="button" role="radio" aria-checked="${f.id === look().finish}" data-finish="${f.id}"><i class="dot" style="background:${f.hex}"></i>${esc(f.name)}</button>`).join('')}</div>
-        <span class="tag">${mine ? `Your look: ${esc(mine.name)}` : 'Tap a finish to preview'}</span>
-        <a class="stage-link" href="#/studio">Customise everything in the Design Studio →</a>
+      <div class="stage rv photo-stage">
+        <img src="img/hero.jpg" alt="Upgraded apartment bathroom with brushed gold tap, round mirror, walnut vanity and rain shower" width="1200" height="900">
+        <span class="tag">${mine ? `Your look: ${esc(mine.name)}` : 'Brushed gold · Walnut · Warm light'}</span>
+        <a class="stage-link" href="#/studio">Design your own in the Design Studio →</a>
       </div>
     </div></section>
     ${p ? `<div class="hello"><div class="wrap"><span>👋 Welcome back${p.name ? `, ${esc(p.name)}` : ''}. Your look is <b>${esc(mine?.name || 'saved')}</b>.</span><span class="btns"><a class="btn sm gold" href="#/studio">Continue designing</a><a class="btn sm ghost light" href="#/services">Your recommendations</a></span></div></div>` : ''}
@@ -87,8 +84,8 @@ const pages = {
         <a class="btn gold" href="#/services/complete-bath">Explore the Complete Bath Edit</a>
       </div>
       <div class="ba rv" style="--x:50%">
-        ${bath({ zones: [], acc: [], light: 'daylight', label: 'Before: old, scaled fittings' })}
-        <div class="after">${bath({ ...PRESETS[1].cfg, zones: DEFAULT.zones, label: 'After: matte black fittings, Midnight Matte look' })}</div>
+        <img src="img/before.jpg" alt="Before: dated bathroom with scaled chrome taps and mismatched fittings" width="1200" height="900">
+        <div class="after"><img src="img/after.jpg" alt="After: the same bathroom with coordinated matte black fittings" width="1200" height="900"></div>
         <span class="lbl l">Before</span><span class="lbl r">After</span>
         <div class="handle" aria-hidden="true"></div>
         <input type="range" min="0" max="100" value="50" aria-label="Compare before and after">
@@ -176,7 +173,7 @@ const pages = {
       <div class="crumbs"><a href="#/services">Services</a> / <a href="#/services?cat=${c.id}">${esc(c.name)}</a> / ${esc(s.name)}</div>
       <div class="detail">
         <div>
-          ${artFor(s, true)}
+          ${photo(s, 'banner')}
           ${forYou(s) ? '<span class="foryou static">Recommended for you</span>' : ''}
           <h1 style="font-size:clamp(2rem,4vw,2.8rem)">${esc(s.name)}</h1>
           <p class="lead">${esc(s.tagline)}</p>
@@ -185,6 +182,7 @@ const pages = {
           <h3 style="margin-top:32px">What's included</h3>
           <ul class="ticks">${s.includes.map(i => `<li>${esc(i)}</li>`).join('')}</ul>
           ${s.custom?.length ? `<h3 style="margin-top:32px">Make it yours</h3>
+            <div class="mine">${bath({ ...look(), zones: s.zones, eco: s.id === 'water-smart' || look().eco, label: 'Preview in your look' })}<small>Preview in ${getProfile() ? 'your look' : 'our default look'}. Change anything in the Studio.</small></div>
             <div class="custom">${s.custom.map(k => `<div><b>${CUSTOM[k][0]}</b><small>${CUSTOM[k][1]}</small></div>`).join('')}</div>
             <a class="btn ghost" style="margin-top:14px" href="#/studio?${toQuery({ ...look(), zones: s.zones })}">Design it in the Studio →</a>` : ''}
           <h3 style="margin-top:40px">How it works</h3>
@@ -308,11 +306,6 @@ const pages = {
 
 /* ---------- Interactive bits ---------- */
 function wireHome() {
-  document.querySelectorAll('[data-finish]').forEach(b => b.addEventListener('click', () => {
-    const f = FINISHES.find(x => x.id === b.dataset.finish);
-    document.querySelectorAll('[data-finish]').forEach(x => x.setAttribute('aria-checked', x === b));
-    $('#heroArt').innerHTML = bath({ ...look(), finish: f.id, label: `Bathroom with ${f.name.toLowerCase()} fittings` });
-  }));
   const ba = $('.ba'), range = $('.ba input');
   range.addEventListener('input', () => ba.style.setProperty('--x', range.value + '%'));
   const box = $('.builder'), art = $('#buildArt'), sum = $('#bsum');
@@ -426,7 +419,7 @@ $('#foot').innerHTML = `
   <div><h4>Services</h4>${CATEGORIES.slice(0, 4).map(c => `<a href="#/services?cat=${c.id}">${esc(c.name)}</a>`).join('')}</div>
   <div><h4>Business</h4>${CATEGORIES.slice(4).map(c => `<a href="#/services?cat=${c.id}">${esc(c.name)}</a>`).join('')}<a href="${SITE.world3d}" target="_blank" rel="noopener">Our plan in 3D</a></div>
   <div><h4>Contact</h4><a href="tel:${C.phone.replace(/\s/g, '')}">${esc(C.phone)}</a><a href="mailto:${C.email}">${esc(C.email)}</a><a href="#/contact">Contact form</a><span>${esc(C.hours)}</span></div>
-  <p class="small">© ${new Date().getFullYear()} Fitting Edge. Product performance claims are product-specific and backed by test results available on request.</p>`;
+  <p class="small">© ${new Date().getFullYear()} Fitting Edge. Product performance claims are product-specific and backed by test results available on request. Photos are illustrative.</p>`;
 
 addEventListener('hashchange', render);
 render();
